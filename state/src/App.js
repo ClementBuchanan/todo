@@ -1,23 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
+import AgeWithClass from './age-class.js';
+import AgeWithFunction from './age-function.js';
+import Family from './family.js';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Family people={['Lincoln', 'Karen', 'Clement',
+        'Audrey']} />
+      <AgeWithClass age={50} />
+      <AgeWithFunction age={34} />
     </div>
   );
 }
