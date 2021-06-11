@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import TodoForm from './form.js';
 import TodoList from './list.js';
-
 import './todo.css';
 
-class ToDo extends React.Component {
+export default function ToDo({ todo, deleteHandler, updateHandler }) {
 
-  constructor(props) {
+  constructor(props){
     super(props);
     this.state = {
       list: [],
@@ -69,5 +68,3 @@ class ToDo extends React.Component {
     );
   }
 }
-
-export default ToDo;
