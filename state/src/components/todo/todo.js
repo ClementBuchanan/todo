@@ -120,6 +120,6 @@ componentDidMount() {
     </>
   );
 };
-}
+
 
 export default ToDo;

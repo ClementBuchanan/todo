@@ -54,24 +54,23 @@ export default function TodoForm({ todos, setTodos }) {
           </Card.Body>
         </Card>
       </Form>
-      {/* <label>
-          <span>To Do Item</span>
-          <input
-            name="text"
-            placeholder="Add To Do List Item"
+      {/* {<label>
+        <span>To Do Item</span>
+        <input>
+          name="text"
+          placeholder="Add To Do List Item"
             onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          <span>Difficulty Rating</span>
-          <input defaultValue="1" type="range" min="1" max="5" name="difficulty" onChange={handleInputChange} />
-        </label>
-        <label>
-          <span>Assigned To</span>
-          <input type="text" name="assignee" placeholder="Assigned To" onChange={handleInputChange} />
-        </label>
-        <button type="submit">Add Item</button>
-      </form> */}
+        </input>
+      </label>}
+      <label>
+        <span>Difficulty Rating</span>
+        <input defaultValue="1" type="range" min="1" max="5" name="difficulty" onChange={handleInputChange} />
+      </label>
+      <label>
+        <span>Assigned To</span>
+        <input type="text" name="assignee" placeholder="Assigned To" onChange={handleInputChange} />
+      </label>
+      <button type="submit">Add Item</button> */}
     </>
   );
 };
