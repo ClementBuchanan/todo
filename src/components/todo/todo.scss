@@ -4,6 +4,16 @@ body, html {
     padding:0;
     width: 100%;
 }
+header {
+        padding:.5em 1em;
+        background-color: blue;
+}
+.ToDoCounterDiv {
+    background-color: darkgray;
+    padding: .5em 1em;
+    margin: 2em
+}
+
 .todo-details {
     display:flex;
     flex-direction:column;
