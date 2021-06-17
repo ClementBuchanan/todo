@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import useForm from 'react-bootstrap';
+// import useForm from 'react-bootstrap';
 
 export default function TodoForm(props) {
-
   const initialState = {}
   const [todo, setTodo] = useState(initialState);
 
@@ -22,12 +21,17 @@ export default function TodoForm(props) {
     setTodo(initialState)
   }
 
+  // props.onSubmit({
+  //   id: Math.floor(Math.random() * 10000),
+  //   text: input
+  // });
+  // setInput('');
 
 
   return (
-    <>
-      <h3>Add Item</h3>
-      <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className='todo-form'>
+      <>
+        <h3>Add Item</h3>
         <Card style={{ width: '18rem' }}>
           <Card.Body>
             <Card.Title>Card Title</Card.Title>
@@ -35,7 +39,8 @@ export default function TodoForm(props) {
               <span>To Do Item</span>
               <input name="text"
                 placeholder="Add To Do List Item"
-                onChange={handleInputChange}>
+                onChange={handleInputChange}
+                className='todo input edit'>
               </input>
             </label>
             <label>
@@ -47,15 +52,15 @@ export default function TodoForm(props) {
               <input type="text" name="assignee" placeholder="Assigned To" onChange={handleInputChange} />
             </label>
 
-            <Button variant="primary" type="submit">
-              Submit
+            <Button onClick={() => props.updatedItem()} className='todo-button edit' variant="primary" type="submit">
+              update
             </Button>
           </Card.Body>
         </Card>
-      </Form>
-    </>
+      </>
+    </Form>
   );
-};
+}
 
 
 
