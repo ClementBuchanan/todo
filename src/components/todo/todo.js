@@ -3,18 +3,42 @@
 import React, { useState, useEffect } from 'react';
 import TodoForm from './form.js';
 import TodoList from './list.js';
+import { RiCloseCircleLine } from 'react-icons/ri';
+import { TiEdit } from 'react-icons/ti';
+import superagent from 'superagent';
 
 import './todo.scss';
 
-export default function ToDo(props) {
+export default function ToDo({ todos, completeTodo, removeTodo, updateTodo }) {
   const [list, setList] = useState([])
   const [count, setCount] = useState(0)
 
-  const addItem = (item) => {
-    item._id = Math.random();
-    item.complete = false;
-    setList([...list, item]);
+
+  const [edit, setEdit] = useState({
+    id: null,
+    value: ''
+  });
+
+  const submitUpdate = value => {
+    updateTodo(edit.id, value);
+    setEdit({
+      id: null,
+      value: ''
+    });
   };
+
+  const addItem = async (item) => {
+    const response = await superagent.post('https://api-js401.herokuapp.com/api/v1/todo').send(item);
+    setList([...list, response.body]);
+  };
+
+  const updateItem = async (item) => {
+    const response = await superagent.put('https://api-js401.herokuapp.com/api/v1/todo').send(item)
+    console.log(response);
+    const filteredList = list.filter(i => i._id === item._id)
+    setList([...filteredList, response.body])
+  }
+
 
   const toggleComplete = id => {
 
@@ -27,22 +51,24 @@ export default function ToDo(props) {
     }
   };
 
+
+
   useEffect(() => {
     setCount(list.filter(item => !item.complete).length)
   }, [list])
 
   useEffect(() => {
-
-    let newList = [
-      { _id: 1, complete: false, text: 'Clean the Kitchen', difficulty: 3, assignee: 'Person A' },
-      { _id: 2, complete: false, text: 'Do the Laundry', difficulty: 2, assignee: 'Person A' },
-      { _id: 3, complete: false, text: 'Walk the Dog', difficulty: 4, assignee: 'Person B' },
-      { _id: 4, complete: true, text: 'Do Homework', difficulty: 3, assignee: 'Person C' },
-      { _id: 5, complete: false, text: 'Take a Nap', difficulty: 1, assignee: 'Person B' },
-    ]
-
-    setList(newList);
+    async function initialData() {
+      const response = await superagent.get('https://api-js401.herokuapp.com/api/v1/todo');
+      setList(response.body.results);
+    }
+    initialData();
   }, []);
+
+  if (edit.id) {
+    return <TodoForm edit={edit} onSubmit={submitUpdate} />;
+  }
+
 
   return (
     <>
@@ -57,7 +83,7 @@ export default function ToDo(props) {
       <section className="todo">
 
         <div>
-          <TodoForm handleSubmit={addItem} />
+          <TodoForm handleSubmit={addItem} updateItem={updateItem} />
         </div>
 
         <div>
@@ -66,8 +92,23 @@ export default function ToDo(props) {
             handleComplete={toggleComplete}
           />
         </div>
+        {/* <div className={todo.isComplete ? 'todo-row complete' : 'todo-row'} key={index}>
+          <div key={todo.id} onClick={() => completeTodo(todo.id)}>
+            {todo.text}
+          </div>
+          <div className='icons'>
+            <RiCloseCircleLine
+              onClick={() => removeTodo(todo.id)}
+              className='delete-icon'
+            />
+            <TiEdit
+              onClick={() => setEdit({ id: todo.id, value: todo.text })}
+              className='edit-icon'
+            />
+          </div>
+        </div> */}
       </section>
     </>
   );
-}
+};
 
