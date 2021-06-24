@@ -2,7 +2,7 @@ import React from 'react';
 import TodoForm from './form.js';
 import TodoList from './list.js';
 
-import './todo.scss';
+import './todo.css';
 
 class ToDo extends React.Component {
 
