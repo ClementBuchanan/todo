@@ -7,7 +7,7 @@ import { RiCloseCircleLine } from 'react-icons/ri';
 import { TiEdit } from 'react-icons/ti';
 import superagent from 'superagent';
 
-import './todo.scss';
+import './todo.css';
 
 export default function ToDo({ todos, completeTodo, removeTodo, updateTodo }) {
   const [list, setList] = useState([])
