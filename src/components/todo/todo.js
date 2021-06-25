@@ -1,31 +1,29 @@
-
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import TodoForm from './form.js';
 import TodoList from './list.js';
 import superagent from 'superagent';
 import useAjax from '../../hooks/ajax.js';
-
+import { Context } from '../../context.js';
 
 import './todo.css';
 
 export default function ToDo() {
-  const [list, setList] = useState([])
-  const [count, setCount] = useState(0)
+  const context = useContext(Context);
+  const [list, setList] = useState([]);
+  const [count, setCount] = useState(0);
 
-
+  console.log(context);
   const [edit, setEdit] = useState({
     id: null,
-    value: ''
+    value: '',
   });
   const { setOptions, response, options } = useAjax();
 
-
-  const submitUpdate = value => {
+  const submitUpdate = (value) => {
     // updateTodo(edit.id, value);
     setEdit({
       id: null,
-      value: ''
+      value: '',
     });
   };
 
@@ -35,7 +33,7 @@ export default function ToDo() {
       url: 'https://api-js401.herokuapp.com/api/v1/todo',
       method: 'post',
       data: item,
-    })
+    });
     // setList([...list, response]);
   };
 
@@ -46,49 +44,39 @@ export default function ToDo() {
       url: `https://api-js401.herokuapp.com/api/v1/todo/${item._id}`,
       method: 'put',
       data: item,
-    })
-  }
+    });
+  };
 
   const deleteItem = async (_id) => {
     setOptions({
       url: `https://api-js401.herokuapp.com/api/v1/todo/${_id}`,
       method: 'delete',
-    })
+    });
 
-    const filteredList = list.filter(i => i._id !== _id)
+    const filteredList = list.filter((i) => i._id !== _id);
 
     setList(filteredList);
   };
-
-  // const toggleComplete = id => {
-
-  //   let item = list.filter(i => i._id === id)[0] || {};
-
-  //   if (item._id) {
-  //     item.complete = !item.complete;
-  //     updateItem(item);
-  //     // let newList = list.map(listItem => listItem._id === item._id ? item : listItem);
-  //     // setList(newList);
-  //   }
-  // };
 
   useEffect(() => {
     if (options.method === 'post') {
       setList([...list, response.data]);
     }
-    if (options.method === 'update') {
-      const filteredList = list.filter(i => i._id !== response.data)
-      setList([...filteredList, response.data])
+    if (options.method === 'put') {
+      const filteredList = list.filter((i) => i._id !== response.data._id);
+      setList([...filteredList, response.data]);
     }
-  }, [response])
+  }, [response]);
 
   useEffect(() => {
-    setCount(list.filter(item => !item.complete).length)
-  }, [list])
+    setCount(list.filter((item) => !item.complete).length);
+  }, [list]);
 
   useEffect(() => {
     async function initialData() {
-      const response = await superagent.get('https://api-js401.herokuapp.com/api/v1/todo');
+      const response = await superagent.get(
+        'https://api-js401.herokuapp.com/api/v1/todo'
+      );
       setList(response.body.results);
     }
     initialData();
@@ -98,19 +86,23 @@ export default function ToDo() {
     return <TodoForm edit={edit} onSubmit={submitUpdate} />;
   }
 
-
   return (
     <>
       <header>
         <span>Home</span>
       </header>
-      <div className='ToDoCounterDiv'>
-        <h2>
-          There are {count} Items To Complete
-        </h2>
+      <div className="ToDoCounterDiv">
+        <h2>There are {count} Items To Complete</h2>
       </div>
+      <button onClick={() => context.setShowCompleted(!context.showCompleted)}>
+        Toggle Completed Items
+      </button>
+      <select onChange={(e) => context.setSortFactor(e.target.value)}>
+        <option value="">unsorted</option>
+        <option value="difficulty">difficulty</option>
+        <option value="completed">Completed</option>
+      </select>
       <section className="todo">
-
         <div>
           <TodoForm handleSubmit={addItem} updateItem={updateItem} />
         </div>
@@ -123,23 +115,7 @@ export default function ToDo() {
             setEdit={setEdit}
           />
         </div>
-        {/* <div className={todo.isComplete ? 'todo-row complete' : 'todo-row'} key={index}>
-          <div key={todo.id} onClick={() => completeTodo(todo.id)}>
-            {todo.text}
-          </div>
-          <div className='icons'>
-            <RiCloseCircleLine
-              onClick={() => removeTodo(todo.id)}
-              className='delete-icon'
-            />
-            <TiEdit
-              onClick={() => setEdit({ id: todo.id, value: todo.text })}
-              className='edit-icon'
-            />
-          </div>
-        </div> */}
       </section>
     </>
   );
-};
-
+}

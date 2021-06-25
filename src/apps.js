@@ -1,12 +1,15 @@
 import React from 'react';
+import Context from './context.js';
 import ThemeContext from './context/Theme.js';
 import siteContext from './context/site.js';
 import ToDo from './components/todo/todo.js';
 
-export default function App() {
-  return (
-    <>
-      <ToDo />
-    </>
-  );
-};
+export default class App extends React.Component {
+  render() {
+    return (
+      <Context>
+        <ToDo />
+      </Context>
+    );
+  }
+}
