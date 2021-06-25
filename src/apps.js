@@ -1,6 +1,7 @@
 import React from 'react';
 import Context from './context.js';
-
+import ThemeContext from './context/Theme.js';
+import siteContext from './context/site.js';
 import ToDo from './components/todo/todo.js';
 
 export default class App extends React.Component {
