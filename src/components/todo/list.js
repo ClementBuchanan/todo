@@ -4,12 +4,20 @@ import { Context } from '../../context.js';
 export default function ToDosList(props) {
   const context = useContext(Context);
   console.log(props.list);
+  const sortedList = props.list.sort((a, b) => {
+    if (context.sortFactor === 'difficulty') {
+      return a.difficulty - b.difficulty;
+    }
+    if (context.sortFactor === 'completed') {
+      return a.completed - b.completed;
+    }
+  });
 
   return (
     <>
       <h1>What's the plan for today?</h1>
       <ul>
-        {props.list.map((item) => {
+        {sortedList.map((item) => {
           console.log(context.showCompleted, item.complete);
           if (!context.showCompleted && item.complete) {
             return null;

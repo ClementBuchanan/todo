@@ -97,6 +97,11 @@ export default function ToDo() {
       <button onClick={() => context.setShowCompleted(!context.showCompleted)}>
         Toggle Completed Items
       </button>
+      <select onChange={(e) => context.setSortFactor(e.target.value)}>
+        <option value="">unsorted</option>
+        <option value="difficulty">difficulty</option>
+        <option value="completed">Completed</option>
+      </select>
       <section className="todo">
         <div>
           <TodoForm handleSubmit={addItem} updateItem={updateItem} />
