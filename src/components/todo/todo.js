@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import TodoForm from './form.js';
 import TodoList from './list.js';
-import { RiCloseCircleLine } from 'react-icons/ri';
-import { TiEdit } from 'react-icons/ti';
 import superagent from 'superagent';
+import useAjax from '../../hooks/ajax.js';
+
 
 import './todo.css';
 
-export default function ToDo({ todos, completeTodo, removeTodo, updateTodo }) {
+export default function ToDo() {
   const [list, setList] = useState([])
   const [count, setCount] = useState(0)
 
@@ -18,9 +18,11 @@ export default function ToDo({ todos, completeTodo, removeTodo, updateTodo }) {
     id: null,
     value: ''
   });
+  const { setOptions, response, options } = useAjax();
+
 
   const submitUpdate = value => {
-    updateTodo(edit.id, value);
+    // updateTodo(edit.id, value);
     setEdit({
       id: null,
       value: ''
@@ -28,30 +30,57 @@ export default function ToDo({ todos, completeTodo, removeTodo, updateTodo }) {
   };
 
   const addItem = async (item) => {
-    const response = await superagent.post('https://api-js401.herokuapp.com/api/v1/todo').send(item);
-    setList([...list, response.body]);
+    // const response = await superagent.post('https://api-js401.herokuapp.com/api/v1/todo').send(item);
+    setOptions({
+      url: 'https://api-js401.herokuapp.com/api/v1/todo',
+      method: 'post',
+      data: item,
+    })
+    // setList([...list, response]);
   };
 
   const updateItem = async (item) => {
-    const response = await superagent.put('https://api-js401.herokuapp.com/api/v1/todo').send(item)
-    console.log(response);
-    const filteredList = list.filter(i => i._id === item._id)
-    setList([...filteredList, response.body])
+    item.complete = !item.complete;
+
+    setOptions({
+      url: `https://api-js401.herokuapp.com/api/v1/todo/${item._id}`,
+      method: 'put',
+      data: item,
+    })
   }
 
+  const deleteItem = async (_id) => {
+    setOptions({
+      url: `https://api-js401.herokuapp.com/api/v1/todo/${_id}`,
+      method: 'delete',
+    })
 
-  const toggleComplete = id => {
+    const filteredList = list.filter(i => i._id !== _id)
 
-    let item = list.filter(i => i._id === id)[0] || {};
-
-    if (item._id) {
-      item.complete = !item.complete;
-      let newList = list.map(listItem => listItem._id === item._id ? item : listItem);
-      setList(newList);
-    }
+    setList(filteredList);
   };
 
+  // const toggleComplete = id => {
 
+  //   let item = list.filter(i => i._id === id)[0] || {};
+
+  //   if (item._id) {
+  //     item.complete = !item.complete;
+  //     updateItem(item);
+  //     // let newList = list.map(listItem => listItem._id === item._id ? item : listItem);
+  //     // setList(newList);
+  //   }
+  // };
+
+  useEffect(() => {
+    if (options.method === 'post') {
+      setList([...list, response.data]);
+    }
+    if (options.method === 'update') {
+      const filteredList = list.filter(i => i._id !== response.data)
+      setList([...filteredList, response.data])
+    }
+  }, [response])
 
   useEffect(() => {
     setCount(list.filter(item => !item.complete).length)
@@ -88,8 +117,10 @@ export default function ToDo({ todos, completeTodo, removeTodo, updateTodo }) {
 
         <div>
           <TodoList
+            handleDelete={deleteItem}
             list={list}
-            handleComplete={toggleComplete}
+            handleComplete={updateItem}
+            setEdit={setEdit}
           />
         </div>
         {/* <div className={todo.isComplete ? 'todo-row complete' : 'todo-row'} key={index}>

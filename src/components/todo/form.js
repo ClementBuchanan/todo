@@ -51,10 +51,14 @@ export default function TodoForm(props) {
               <span>Assigned To</span>
               <input type="text" name="assignee" placeholder="Assigned To" onChange={handleInputChange} />
             </label>
-
-            <Button onClick={() => props.updatedItem()} className='todo-button edit' variant="primary" type="submit">
-              update
+            <Button className='todo-button edit' variant="primary" type="submit">
+              Add item
             </Button>
+
+
+            {/* <Button onClick={() => props.updatedItem()} className='todo-button edit' variant="primary" type="submit">
+              update
+            </Button> */}
           </Card.Body>
         </Card>
       </>
