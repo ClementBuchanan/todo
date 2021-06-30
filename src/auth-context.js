@@ -26,6 +26,7 @@ const Settings = (props) => {
         console.log(response.data);
       });
   }
+  console.log('AuthContext loggedIn;;;;;;;;', loggedIn);
   return (
     <AuthContext.Provider
       value={{
