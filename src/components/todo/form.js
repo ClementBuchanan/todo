@@ -5,31 +5,24 @@ import Button from 'react-bootstrap/Button';
 // import useForm from 'react-bootstrap';
 
 export default function TodoForm(props) {
-  const initialState = {}
+  const initialState = {};
   const [todo, setTodo] = useState(initialState);
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     setTodo({
       ...todo,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     props.handleSubmit(todo);
-    setTodo(initialState)
-  }
-
-  // props.onSubmit({
-  //   id: Math.floor(Math.random() * 10000),
-  //   text: input
-  // });
-  // setInput('');
-
+    setTodo(initialState);
+  };
 
   return (
-    <Form onSubmit={handleSubmit} className='todo-form'>
+    <Form onSubmit={handleSubmit} className="todo-form">
       <>
         <h3>Add Item</h3>
         <Card style={{ width: '18rem' }}>
@@ -37,34 +30,43 @@ export default function TodoForm(props) {
             <Card.Title>Card Title</Card.Title>
             <label>
               <span>To Do Item</span>
-              <input name="text"
+              <input
+                name="text"
                 placeholder="Add To Do List Item"
                 onChange={handleInputChange}
-                className='todo input edit'>
-              </input>
+                className="todo input edit"
+              ></input>
             </label>
             <label>
               <span>Difficulty Rating</span>
-              <input defaultValue="1" type="range" min="1" max="5" name="difficulty" onChange={handleInputChange} />
+              <input
+                defaultValue="1"
+                type="range"
+                min="1"
+                max="5"
+                name="difficulty"
+                onChange={handleInputChange}
+              />
             </label>
             <label>
               <span>Assigned To</span>
-              <input type="text" name="assignee" placeholder="Assigned To" onChange={handleInputChange} />
+              <input
+                type="text"
+                name="assignee"
+                placeholder="Assigned To"
+                onChange={handleInputChange}
+              />
             </label>
-            <Button className='todo-button edit' variant="primary" type="submit">
+            <Button
+              className="todo-button edit"
+              variant="primary"
+              type="submit"
+            >
               Add item
             </Button>
-
-
-            {/* <Button onClick={() => props.updatedItem()} className='todo-button edit' variant="primary" type="submit">
-              update
-            </Button> */}
           </Card.Body>
         </Card>
       </>
     </Form>
   );
 }
-
-
-

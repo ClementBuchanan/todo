@@ -1,15 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Context from './context.js';
-import ThemeContext from './context/Theme.js';
-import siteContext from './context/site.js';
+import AuthContext from './auth-context';
+import AuthLine from './components/todo/authLine';
+
 import ToDo from './components/todo/todo.js';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Context>
-        <ToDo />
-      </Context>
-    );
-  }
+export default function App(props) {
+  const context = useContext(AuthContext);
+
+  return <Context>{context.loggedIn ? <ToDo /> : <AuthLine />}</Context>;
 }
