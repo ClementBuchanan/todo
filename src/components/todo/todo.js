@@ -99,7 +99,7 @@ export default function ToDo() {
       </button>
       <select onChange={(e) => context.setSortFactor(e.target.value)}>
         <option value="">unsorted</option>
-        <option value="difficulty">difficulty</option>
+        <option value="difficulty">Difficulty</option>
         <option value="completed">Completed</option>
       </select>
       <section className="todo">
