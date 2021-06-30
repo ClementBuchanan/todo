@@ -5,7 +5,7 @@ import superagent from 'superagent';
 import useAjax from '../../hooks/ajax.js';
 import { Context } from '../../context.js';
 
-import './todo.scss';
+import './todo.css';
 
 export default function ToDo() {
   const context = useContext(Context);
